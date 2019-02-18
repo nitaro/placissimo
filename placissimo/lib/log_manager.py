@@ -122,6 +122,9 @@ def handle_streams():
             logging.debug("Removing StreamHandler object: {}".format(handler))
             logging.root.removeHandler(handler)
 
+    return
+
+
 def handle_sockets(websocket_connections, allow_broadcasts, socket_filters):
     """ Adds a websocket logging handler to the root logger.
     
