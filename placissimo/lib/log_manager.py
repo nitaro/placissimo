@@ -93,7 +93,6 @@ class _WebsocketHandler(logging.StreamHandler):
         return
 
 
-
 def handle_streams():
     """ Removes any existing stream handlers for the root logger and adds a new, root stream 
     handler. 
