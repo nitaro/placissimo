@@ -14,7 +14,6 @@
 Without broadcasts, the results should be 2 private messages and only 2 broadcast messages.
 """
 
-
 # import modules.
 import sys; sys.path.append("..")
 import logging
