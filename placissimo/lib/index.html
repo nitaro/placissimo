@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>placissimo.index_file</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+    </head>
+    <body class="container">
+        <h1 class="jumbotron">Placissimo</h1>
+        <hr />
+        <div class="row-fluid">
+            <div class="col-sm-4" id="menu">
+                <!-- Because "/" is excluded from the endpoint tally, one is subtracted from the length. -->
+                <h2>Endpoints: <span class="badge">{{ len(server_locals["get_endpoint_paths"]()) }}</span></h2>
+                <dl>
+                    <dt>/</dt>
+                    <dd><em>You're looking at it ...</em></dd>
+                    <dt>/api</dt>
+                    <dd>Starts a task by calling 
+                        <code>{{ "{}:{}()".format(server_locals["funk"].__code__.co_filename.replace("\\", "/"), 
+                            server_locals["funk"].__name__) }}</code>
+                    </dd>
+                    <dt>/state</dt>
+                    <dd>JSON metadata about the application state</dd>
+                    <dt>/tasks</dt>
+                    <dd>JSON metadata about tasks</dd>
+                {% if "/filesystem" in server_locals["get_endpoint_paths"]() %}
+                    <dt>/filesystem</dt>
+                    <dd>JSON metadata about files and folders</dd>
+                {% end %}
+                {% if "/websocket" in server_locals["get_endpoint_paths"]() %}
+                    <dt>/websocket</dt>
+                    <dd>Websocket connection</dd>
+                {% end %}
+                </dl>
+            </div>
+            <div class="col-sm-8" id="messages">
+                <h2>Websocket messages: <span id="message_count" class="badge">0</span></h2>
+                {%  if server_locals["allow_websocket"] %}
+                    <ol reversed id="message_list"></ol>
+                {%  else %}
+                    <p class="alert alert-info">Websocket connections are disabled.</p>
+                {%  end %}
+            </div>
+        </div>
+        <script>
+        
+        // log the "render_object" argument passed to placissimo.call().
+        var placissimo__render_object = "{{ str(render_object) }}";
+        console.log("Placissimo render object: ", placissimo__render_object);
+
+        // convert Python logging level to Bootstrap class.
+        function getMessageClass(levelname) {
+            var class_prefix = "alert alert-";
+            switch(levelname) {
+                case "DEBUG": return class_prefix + "secondary";
+                case "INFO": return class_prefix + "info";
+                case "WARNING": return class_prefix + "warning";
+                case "ERROR": return class_prefix + "danger";
+                case "CRITICAL": return class_prefix + "danger";
+                default: return class_prefix + "light";
+            }
+        }
+
+        // get elements.
+        var message_count_el = document.getElementById("message_count");
+        var message_list_el = document.getElementById("message_list");
+        
+        // set the websocket address and open a new socket.
+        var socket_address = `ws://localhost:${location.port}/websocket`;
+        var socket = new WebSocket(socket_address);
+
+        // create a placeholder for this client's socket identifier. 
+        var socket_id = null;
+
+        // send intial, unique greeting to send socket server.
+        var greeting = "socket_greeting__" + btoa(Date.now() + Math.random());
+
+        // send @greeting to the socket server.
+        socket.onopen = function () {
+            alert("Websocket connected at: " + socket_address);
+            socket.send(greeting);
+        }        
+
+        // process received messages.
+        socket.onmessage = function (event) {
+
+            console.log(event);
+            data = JSON.parse(event.data);
+            
+            // if @data.message == @greeting, then store this client's socket identifier.
+            if (data.socketMessage === greeting) {
+                socket_id = data.socketSender;
+                console.log("This windows's socket identifier is: " + socket_id)
+            }
+            // if @data.message was sent by a websocket client other than this one, log it.
+            else if (data.socketSender !== null && data.socketSender !== socket_id) {
+                console.log(`Another client (${data.socketSender}) sent message: 
+                    ${data.socketMessage}`)
+            }
+            // otherwise update @message_list_el with a message sent by either the socket server or 
+            // this socket client.
+            else {
+                message_el = document.createElement('li');
+                message_el.className = getMessageClass(data.levelname);
+                message_el.appendChild(document.createTextNode(data.socketMessage));
+                message_list_el.insertBefore(message_el, message_list_el.firstChild);
+                message_count_el.innerText ++;
+            }
+        }
+        </script>
+    </body>
+</html>

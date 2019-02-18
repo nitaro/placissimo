@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>websocket_test</title>
+    </head>
+    <body>
+        <script>
+        
+        var socket_address = `ws://localhost:${location.port}/websocket`;
+        var socket = new WebSocket(socket_address);
+        var socket_id = null;
+        var greeting = "socket_greeting__" + btoa(Date.now() + Math.random());
+
+		// send messages.
+        socket.onopen = function (event) {
+
+            socket.send(greeting);
+            console.log("Sent greeting.")
+
+            socket.send("private_mode");
+            console.log("Sent private message.");
+
+            socket.send("broadcast_mode");
+            console.log("Sent broadcast message.");
+        }
+
+        broadcast_count = 0;
+        socket.onmessage = function (event) {
+
+            data = JSON.parse(event.data);
+
+            // get @socket_id.
+            if (data.socketMessage === greeting) {
+                socket_id = data.socketSender;
+                console.log("This windows's socket identifier is: " + socket_id)
+            }
+
+            // send a message if another client is broadcasting "broadcast_mode".
+            else if (broadcast_count == 0 && data.socketMessage == "broadcast_mode" && data.socketSender != socket_id) {
+                socket.send("broadcast_mode");
+                console.log("Resent broadcast message from another client.");
+                broadcast_count ++;
+            }
+        }
+
+        </script>
+    </body>
+</html>

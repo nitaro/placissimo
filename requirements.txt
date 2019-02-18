@@ -1,0 +1,4 @@
+asyncio>=3.4.3
+plac>=0.9.6
+requests>=2.18.4
+tornado>=5.1
