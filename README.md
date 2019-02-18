@@ -54,7 +54,7 @@ Additional command line options let you:
 - Send and receive log statements with JavaScript:
   - Prohibit client sockets from sending messages to each other: `-websocket-mode=private`
   - Allow client sockets to "chat" with each other: `-websocket-mode=broadcast`
-- References local files and folders: `-filesystem-path="." `
+- Reference local files and folders: `-filesystem-path="." `
   - Parents and siblings of this folder aren't accessible.
 
 To see the options do:
