@@ -62,6 +62,7 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
         not a list, if @port is not an int.
         - ValueError: If @server_name contains non-letters or if @port is not between 5000 and 9999.
         - FileNotFoundError: If @index_file is not a file.
+        - dependency_error.DependencyError: If @allow_websocket is True and @index_file is None.
         - NotADirectoryError: If @filesystem_path is not a directory.
     """
 
