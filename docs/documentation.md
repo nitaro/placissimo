@@ -141,7 +141,7 @@ The following keys are omitted from the response while `done=false`:
  3. exception
 
 #### `/filesystem` ####
-This endpoint is only available if a starting path is passed via the command line or through Python code.
+This endpoint is only available if an absolute or relative starting path is passed via the command line or through Python code.
 
 *Command line*:
 	
@@ -153,8 +153,6 @@ This endpoint is only available if a starting path is passed via the command lin
 	#!/usr/bin/python 3
 	import placissimo, example_01
 	placissimo.serve(funk=example_01.main, filesystem_path=".")
-
-*Users can pass in a starting path using either relative or absolute path notation.*
 
 ##### Parameters #####
 This endpoint takes two optional parameters, `path` and `exclude`.
