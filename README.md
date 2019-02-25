@@ -5,18 +5,18 @@ It allows you to run a function from the command line or through a RESTful HTTP 
 
 ## Stay Lazy My Friends ##
 Just add "issimo" to `plac`:
-	        
+			
 	#!/usr/bin/python 3
 	
 	# hello.py
 	def main(name):
-	    hello = "Hello {}".format(name)
-	    print(hello)
-	    return hello
+		hello = "Hello {}".format(name)
+		print(hello)
+		return hello
 
 	if __name__ == "__main__":
-	    import placissimo # import plac
-	    placissimo.call(main) # plac.call(main)
+		import placissimo # import plac
+		placissimo.call(main) # plac.call(main)
 
 Use the command line as before:
 

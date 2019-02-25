@@ -81,12 +81,12 @@ In other words, a request for `/api?myNumber=12&myBoolean=True` means that `myNu
 
 ##### Response #####
 	{
-	    "servissimo_001": {
-	        "caller": "example_01.py.main",
-	        "start_time": "2019-02-14T10:00:30.300222",
-	        "running": true,
-	        "done": false
-	    }
+		"servissimo_001": {
+			"caller": "example_01.py.main",
+			"start_time": "2019-02-14T10:00:30.300222",
+			"running": true,
+			"done": false
+		}
 	}
 
 #### `/state` ####
@@ -95,17 +95,17 @@ None
 
 ##### Response #####
 	{
-	    "endpoints": [
-	        "/",
-	        "/api",
-	        "/filesystem",
-	        "/state",
-	        "/tasks",
-	        "/websocket"
-	    ],
-	    "running_threads": 0,
-	    "available_threads": 20,
-	    "websocket_connections": 0
+		"endpoints": [
+			"/",
+			"/api",
+			"/filesystem",
+			"/state",
+			"/tasks",
+			"/websocket"
+		],
+		"running_threads": 0,
+		"available_threads": 20,
+		"websocket_connections": 0
 	}
 
 #### `/tasks` ####
@@ -116,22 +116,22 @@ By requesting a valid task identifier, e.g. `/tasks?name=servissimo_001`, the re
 
 ##### Response #####
 	{
-	    "servissimo_001": {
-	        "caller": "example_01.py.main",
-	        "start_time": "2019-02-14T10:00:30.300222",
-	        "running": false,
-	        "done": true,
-	        "end_time": "2019-02-14T10:00:33.325225",
-	        "result": [
-	            [
-	                "example_01.py",
-	                "example_02.py",
-	                ...
-	            ],
-	            "Thu Feb 14 10:00:33 2019"
-	        ],
-	        "exception": null
-	    }
+		"servissimo_001": {
+			"caller": "example_01.py.main",
+			"start_time": "2019-02-14T10:00:30.300222",
+			"running": false,
+			"done": true,
+			"end_time": "2019-02-14T10:00:33.325225",
+			"result": [
+				[
+					"example_01.py",
+					"example_02.py",
+					...
+				],
+				"Thu Feb 14 10:00:33 2019"
+			],
+			"exception": null
+		}
 	}
 
 The following keys are omitted from the response while `done=false`:
