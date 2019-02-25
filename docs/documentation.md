@@ -81,12 +81,12 @@ In other words, a request for `/api?myNumber=12&myBoolean=True` means that `myNu
 
 ##### Response #####
 	{
-		"servissimo_001": {
-			"caller": "example_01.py.main",
-			"start_time": "2019-02-14T10:00:30.300222",
-			"running": true,
-			"done": false
-		}
+	  "servissimo_001": {
+	    "caller": "example_01.py.main",
+	    "start_time": "2019-02-14T10:00:30.300222",
+	    "running": true,
+	    "done": false
+	  }
 	}
 
 #### `/state` ####
@@ -95,17 +95,17 @@ None
 
 ##### Response #####
 	{
-		"endpoints": [
-			"/",
-			"/api",
-			"/filesystem",
-			"/state",
-			"/tasks",
-			"/websocket"
-		],
-		"running_threads": 0,
-		"available_threads": 20,
-		"websocket_connections": 0
+	  "endpoints": [
+	    "/",
+	    "/api",
+	    "/filesystem",
+	    "/state",
+	    "/tasks",
+	    "/websocket"
+	  ],
+	  "running_threads": 0,
+	  "available_threads": 20,
+	  "websocket_connections": 0
 	}
 
 #### `/tasks` ####
@@ -116,22 +116,22 @@ By requesting a valid task identifier, e.g. `/tasks?name=servissimo_001`, the re
 
 ##### Response #####
 	{
-		"servissimo_001": {
-			"caller": "example_01.py.main",
-			"start_time": "2019-02-14T10:00:30.300222",
-			"running": false,
-			"done": true,
-			"end_time": "2019-02-14T10:00:33.325225",
-			"result": [
-				[
-					"example_01.py",
-					"example_02.py",
-					...
-				],
-				"Thu Feb 14 10:00:33 2019"
-			],
-			"exception": null
-		}
+	  "servissimo_001": {
+	    "caller": "example_01.py.main",
+	    "start_time": "2019-02-14T10:00:30.300222",
+	    "running": false,
+	    "done": true,
+	    "end_time": "2019-02-14T10:00:33.325225",
+	    "result": [
+	      [
+	        "example_01.py",
+	        "example_02.py",
+	        ...
+	      ],
+	      "Thu Feb 14 10:00:33 2019"
+	    ],
+	    "exception": null
+	  }
 	}
 
 The following keys are omitted from the response while `done=false`:
@@ -173,25 +173,25 @@ Omitting the `exclude` parameter will return both files and folders.
 
 ##### Response #####
 	{
-		"example_01.py": {
-			"is_folder": false,
-			"size_in_bytes": 1066,
-			"creation_date": "2019-02-25T09:53:10.159156",
-			"path": "example_01.py",
-			"full_path": "D:\\placissimo-dev\\tests\\example_01.py",
-			"container": ".",
-			"full_container": "D:\\placissimo-dev\\tests"
-		},
-		...
-		"__pycache__": {
-			"is_folder": true,
-			"size_in_bytes": null,
-			"creation_date": "2019-02-16T16:26:05.089185",
-			"path": "__pycache__",
-			"full_path": "C:\\Users\\Nitin\\Dropbox\\placissimo-dev\\tests\\__pycache__",
-			"container": ".",
-			"full_container": "D:\\placissimo-dev\\tests"
-		}
+	  "example_01.py": {
+	    "is_folder": false,
+	    "size_in_bytes": 1066,
+	    "creation_date": "2019-02-25T09:53:10.159156",
+	    "path": "example_01.py",
+	    "full_path": "D:\\placissimo-dev\\tests\\example_01.py",
+	    "container": ".",
+	    "full_container": "D:\\placissimo-dev\\tests"
+	  },
+	  ...
+	  "__pycache__": {
+	    "is_folder": true,
+	    "size_in_bytes": null,
+	    "creation_date": "2019-02-16T16:26:05.089185",
+	    "path": "__pycache__",
+	    "full_path": "C:\\Users\\Nitin\\Dropbox\\placissimo-dev\\tests\\__pycache__",
+	    "container": ".",
+	    "full_container": "D:\\placissimo-dev\\tests"
+	  }
 	}
 
 #### `/websocket` ####
@@ -247,11 +247,11 @@ To request a specific logging level, just preface the message with a valid Pytho
 If you request a logging level, the `socketMessage` value will equal the intended message:
 
 	{
-		...
-		levelname: "DEBUG",
-		"socketMessage": "Hello World",
-		"message": "Websocket client <placissimo.lib.handlers.websocket_handler.WebsocketHandler object at 0x000001A2105AF0B8> said: debug:Hello World",
-		...
+	  ...
+	  levelname: "DEBUG",
+	  "socketMessage": "Hello World",
+	  "message": "Websocket client <placissimo.lib.handlers.websocket_handler.WebsocketHandler object at 0x000001A2105AF0B8> said: debug:Hello World",
+	  ...
 	}
 
 ##### Tracking Tasks #####
@@ -260,10 +260,10 @@ As you already know, the `/api` endpoint returns a task identifier, e.g. `servis
 This value will appear in the `threadName` field. This can be used to track logging statements that are derived from a specific call to your function.
 
 	{
-		...
-		"threadName": "servissimo_001",
-		"socketMessage": "Getting contents for: ."
-		...
+	  ...
+	  "threadName": "servissimo_001",
+	  "socketMessage": "Getting contents for: ."
+	  ...
 	}
 
 ## Callbacks ##
@@ -276,13 +276,13 @@ And there's no need to annotate your callback argument. Placissimo will automati
 *Example:*
 
 	def main(..., server_dict=None):
-		
-		if server_dict is None:
-			# the command line was used.
-			print("Hello World")
-		else:
-			# the server was used.
-			return "Hello World"
+	  
+	  if server_dict is None:
+	    # the command line was used.
+	    print("Hello World")
+	  else:
+	    # the server was used.
+	    return "Hello World"
 
 	# pass in the the name of the argument you want to receive the callback from.
 	placissimo.call(main, callback_arg="server_dict")

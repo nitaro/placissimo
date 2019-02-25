@@ -5,18 +5,18 @@ It allows you to run a function from the command line or through a RESTful HTTP 
 
 ## Stay Lazy My Friends ##
 Just add "issimo" to `plac`:
-			
+	    
 	#!/usr/bin/python 3
 
 	# hello.py
 	def main(name):
-		hello = "Hello {}".format(name)
-		print(hello)
-		return hello
+	  hello = "Hello {}".format(name)
+	  print(hello)
+	  return hello
 
 	if __name__ == "__main__":
-		import placissimo # import plac
-		placissimo.call(main) # plac.call(main)
+	  import placissimo # import plac
+	  placissimo.call(main) # plac.call(main)
 
 Use the command line as before:
 
@@ -35,15 +35,15 @@ Make requests:
 	requests.post("http://localhost:8080/tasks").text
 	""" Response: 
 	{
-		"servissimo_001": {
-			"caller": "hello.py.main",
-			"start_time": "2019-02-01T18:15:49.728341",
-			"end_time": "2019-02-01T18:15:49.737351",
-			"running": false,
-			"done": true,
-			"result": "Hello Placissimo",
-			"exception": null
-		}
+	  "servissimo_001": {
+	    "caller": "hello.py.main",
+	    "start_time": "2019-02-01T18:15:49.728341",
+	    "end_time": "2019-02-01T18:15:49.737351",
+	    "running": false,
+	    "done": true,
+	    "result": "Hello Placissimo",
+	    "exception": null
+	  }
 	} """
 
 Additional command line options let you:
