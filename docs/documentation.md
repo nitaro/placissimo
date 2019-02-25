@@ -154,7 +154,7 @@ This endpoint is only available if a starting path is passed via the command lin
 	import placissimo, example_01
 	placissimo.serve(funk=example_01.main, filesystem_path=".")
 
-*Users can pass in a starting path using either relative or absolute path notation. But all paths in the response will be shown as relative to the starting path.*
+*Users can pass in a starting path using either relative or absolute path notation.*
 
 ##### Parameters #####
 This endpoint takes two optional parameters, `path` and `exclude`.
@@ -179,6 +179,7 @@ Omitting the `exclude` parameter will return both files and folders.
 	        "container": ".",
 	        "is_folder": false,
 	        "path": "example_01.py",
+			"full_path": "D:/placissimo-dev/tests/example_01.py",
 	        "size_in_bytes": 1110,
 	        "creation_date": "2018-10-15T14:46:24.095074"
 	    },
@@ -187,6 +188,7 @@ Omitting the `exclude` parameter will return both files and folders.
 	        "container": ".",
 	        "is_folder": true,
 	        "path": "__pycache__",
+			"full_path": "D:/placissimo-dev/tests/__pycache__",
 	        "size_in_bytes": null,
 	        "creation_date": "2019-02-02T10:14:01.100704"
 	    }

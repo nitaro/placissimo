@@ -109,13 +109,15 @@ class FilesystemHandler(web.RequestHandler):
             size_in_bytes = content_stats.st_size if not is_folder else None
             creation_date = datetime.fromtimestamp(content_stats.st_ctime).isoformat()
 
-            # make @path relative to @self.parent_path in order to hide absolute paths.
+            # add an absolute path and make @path relative to @self.parent_path.
+            full_path = path
             path = os.path.relpath(path, self.parent_path)
             path = self._normalize_path(path)
 
             # create dict to return.
             folder_contents[content] = dict(container=container, is_folder=is_folder, 
-                path=path, size_in_bytes=size_in_bytes, creation_date=creation_date)
+                path=path, full_path=full_path, size_in_bytes=size_in_bytes, 
+                creation_date=creation_date)
 
         return folder_contents
 
