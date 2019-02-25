@@ -175,23 +175,25 @@ Omitting the `exclude` parameter will return both files and folders.
 
 ##### Response #####
 	{
-	    "example_01.py": {
-	        "container": ".",
-	        "is_folder": false,
-	        "path": "example_01.py",
-		"full_path": "D:/placissimo-dev/tests/example_01.py",
-	        "size_in_bytes": 1110,
-	        "creation_date": "2018-10-15T14:46:24.095074"
-	    },
+		"example_01.py": {
+			"is_folder": false,
+			"size_in_bytes": 1066,
+			"creation_date": "2019-02-25T09:53:10.159156",
+			"path": "example_01.py",
+			"full_path": "D:\\placissimo-dev\\tests\\example_01.py",
+			"container": ".",
+			"full_container": "D:\\placissimo-dev\\tests"
+		},
 		...
-	    "__pycache__": {
-	        "container": ".",
-	        "is_folder": true,
-	        "path": "__pycache__",
-		"full_path": "D:/placissimo-dev/tests/__pycache__",
-	        "size_in_bytes": null,
-	        "creation_date": "2019-02-02T10:14:01.100704"
-	    }
+		"__pycache__": {
+			"is_folder": true,
+			"size_in_bytes": null,
+			"creation_date": "2019-02-16T16:26:05.089185",
+			"path": "__pycache__",
+			"full_path": "C:\\Users\\Nitin\\Dropbox\\placissimo-dev\\tests\\__pycache__",
+			"container": ".",
+			"full_container": "D:\\placissimo-dev\\tests"
+		}
 	}
 
 #### `/websocket` ####

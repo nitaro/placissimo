@@ -28,14 +28,8 @@ class FilesystemHandler(web.RequestHandler):
         self.logger = logging.getLogger(__name__)
         self.logger.addHandler(logging.NullHandler())
 
-        # convenience functions to clean up path notation.
-        self._normalize_sep = lambda p: p.replace(os.sep, os.altsep) if (os.altsep == "/") else p
-        self._normalize_path = lambda p: self._normalize_sep(os.path.normpath(p)) if (
-            p != "") else ""
-        self._join_paths = lambda *p: self._normalize_path(os.path.join(*p))
-
         # set attributes.
-        self.parent_path = self._normalize_path(parent_path)
+        self.parent_path = os.path.normpath(parent_path)
         self.allow_get = allow_get
         
 
@@ -70,7 +64,9 @@ class FilesystemHandler(web.RequestHandler):
             raise ValueError(msg)
 
         # join @directory with @parent_path.
-        directory = self._join_paths(self.parent_path, directory)
+        directory = os.path.join(self.parent_path, directory)
+        directory = os.path.normpath(directory)
+
         self.logger.info("Requested folder: {}".format(directory))
         if exclude == "files":
             self.logger.info("Files will be excluded from the response.")
@@ -91,33 +87,33 @@ class FilesystemHandler(web.RequestHandler):
         for content in os.listdir(directory):
 
             # get the complete path to @content.
-            path = self._join_paths(directory, content)
+            full_path = os.path.join(directory, content)
+            full_path = os.path.normpath(full_path)
 
-            # determine the containing folder path relative to @self.parent_path.
-            container = os.path.relpath(directory, self.parent_path)
-            container  = self._normalize_path(container)
-            
             # skip @content as needed per @exclude.
-            is_folder = os.path.isdir(path)
+            is_folder = os.path.isdir(full_path)
             if exclude == "files" and not is_folder:
                 continue
             elif exclude == "folders" and is_folder:
                 continue
 
             # update @folder_contents.
-            content_stats = os.stat(path)
+            content_stats = os.stat(full_path)
             size_in_bytes = content_stats.st_size if not is_folder else None
             creation_date = datetime.fromtimestamp(content_stats.st_ctime).isoformat()
 
-            # add an absolute path and make @path relative to @self.parent_path.
-            full_path = path
-            path = os.path.relpath(path, self.parent_path)
-            path = self._normalize_path(path)
+            # get the relative version of @full_path.
+            path = os.path.relpath(full_path, self.parent_path)
+            path = os.path.normpath(path)
+
+            # get the containing folder relative to @self.parent_path.
+            container = os.path.relpath(directory, self.parent_path)
+            container  = os.path.normpath(container)
 
             # create dict to return.
-            folder_contents[content] = dict(container=container, is_folder=is_folder, 
-                path=path, full_path=full_path, size_in_bytes=size_in_bytes, 
-                creation_date=creation_date)
+            folder_contents[content] = dict(is_folder=is_folder, size_in_bytes=size_in_bytes, 
+                creation_date=creation_date, path=path, full_path=full_path, container=container,
+                full_container=directory)
 
         return folder_contents
 
