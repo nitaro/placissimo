@@ -7,7 +7,7 @@ It allows you to run a function from the command line or through a RESTful HTTP 
 Just add "issimo" to `plac`:
 			
 	#!/usr/bin/python 3
-	
+
 	# hello.py
 	def main(name):
 		hello = "Hello {}".format(name)
