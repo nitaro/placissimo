@@ -262,7 +262,7 @@ This value will appear in the `threadName` field. This can be used to track logg
 	{
 	  ...
 	  "threadName": "servissimo_001",
-	  "socketMessage": "Getting contents for: ."
+	  "socketMessage": "Getting contents for: .",
 	  ...
 	}
 
