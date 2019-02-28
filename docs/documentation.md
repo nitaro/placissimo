@@ -33,7 +33,7 @@ When you `import placissimo` you have access to three main objects:
 1. `placissimo.call()`: Replaces `plac.call()`.
 2. `placissimo.serve()`: Accepts your Python function and provides a RESTful interface to it.
 	- This is called by `placissimo.call()` but can be used in native Python code if you don't need command line access.
-3. `placissimo.index_file`: Absolute path to the built-in example HTML template, `./placissimo/lib/index.html`.
+3. `placissimo.index_file`: Absolute path to the built-in example HTML template, `placissimo/lib/index.html`.
 
 ## Client Side ##
 Clients can access up to six possible endpoints:
