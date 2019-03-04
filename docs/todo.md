@@ -3,6 +3,7 @@
 
 ## Definitely ##
 - Add a unit test to make sure `dependency_error.DependencyError` is raised when `allow_websocket=True` but `index_file=None`.
+- Add a unit test to make sure that parent and sibling folders of a given `filesystem_path` are not accessible.
 - Add an option for secure cookie access.
 - Add a Vue.js example.
   - The point of this would be to have an example with a filesystem browser.
