@@ -188,7 +188,7 @@ Omitting the `exclude` parameter will return both files and folders.
 	    "size_in_bytes": null,
 	    "creation_date": "2019-02-16T16:26:05.089185",
 	    "path": "__pycache__",
-	    "full_path": "C:\\Users\\Nitin\\Dropbox\\placissimo-dev\\tests\\__pycache__",
+	    "full_path": "D:\\placissimo-dev\\tests\\__pycache__",
 	    "container": ".",
 	    "full_container": "D:\\placissimo-dev\\tests"
 	  }
