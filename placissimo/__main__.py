@@ -43,7 +43,7 @@ def call(funk, server_name="servissimo", render_object=None, callback_arg=None, 
 
     Raises:
         - ValueError: If @callback_arg is not an actual argument within @funk.
-        - Exception If @funk can't be wrapped then the given exception is raised. But if the 
+        - Exception: If @funk can't be wrapped then the given exception is raised. But if the 
         exception is "dependency_error.DependencyError", then sys.exit() is called.
     """
 
