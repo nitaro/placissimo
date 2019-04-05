@@ -19,6 +19,7 @@ class _WebsocketFilter(logging.Filter):
         self.ignore_by_starts = ["asyncio", "tornado"]
         self.ignore_by_ends = [".private_logger"]
 
+
     def filter(self, record):
         """ Removes all records sent by any logger found in @self.ignore_by_starts or 
         @self.ignore_by_ends. """

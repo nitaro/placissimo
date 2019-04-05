@@ -1,7 +1,7 @@
 # Introduzione #
 **Placissimo** is a [**Plac**](https://pypi.org/project/plac/) intensifier.
 
-It allows you to run a function from the command line or through a RESTful HTTP server. The function just needs to be annotated as per Plac.
+It allows you to run a function from the command line *or* through a RESTful HTTP server. The function just needs to be annotated as per Plac.
 
 ## Stay Lazy My Friends ##
 Just add "issimo" to `plac`:
