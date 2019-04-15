@@ -21,7 +21,7 @@ Other reason to avoid Placissimo:
 ## Installation ##
 I've had more success installing the requirements first a la:
 
-	pip3 -r requirements.txt
+	pip3 install -r requirements.txt
 
 and *then* doing:
 
