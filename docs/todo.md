@@ -13,8 +13,10 @@
   - This should be able to access the host's filesystem.
 
 ## Maybe ##
+- Use an ordered dict for task metadata.
 - Consider a `/cleanup` endpoint that accepts a task's thread name as a parameter and then removes the task from `@task_metadata`. If the task is still running this should return an error message.
   - Maybe this should also call `.shutdown()` for `ThreadPoolExecutor()`?
+  - Alternately, one should just be able to use a callback and clean up any object inside, including the task metadata. I'd rather not add endpoints if they aren't really needed.
 - Consider a `/cancel` endpoint that allows you to try and cancel a thread.
   - This would match the ability to stop a process from the command line with `Ctrl + C`.
 - Consider adding an endpoint that uses the `inspect` module to provide information on the module function in question.
