@@ -20,13 +20,8 @@ Other reason to avoid Placissimo:
 	- Placissimo is really intended to help create browser-based desktop apps.
 
 ## Installation ##
-I've had more success installing the requirements first a la:
 
-	pip3 install -r requirements.txt
-
-and *then* doing:
-
-	pip3 install .
+	pipenv install
 
 ## Server Side ##
 When you `import placissimo` you have access to three main objects:
