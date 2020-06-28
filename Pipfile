@@ -1,0 +1,15 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+asyncio = ">=3.4.3"
+plac = ">=0.9.6"
+requests = ">=2.18.4"
+tornado = ">=5.1,<6.0.0"
+
+[requires]
+python_version = "3.6"

@@ -1,4 +1,4 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
 """ This module contains a custom exception class for when dependencies are not satisfied in 
 placissimo.server.serve(). """

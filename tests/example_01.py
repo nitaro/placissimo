@@ -1,13 +1,14 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
 """ Placissimo Example 01: shows folder contents using os.listdir(). """
 
-# import modules.
-import sys; sys.path.append("..")
 import logging
 import os
+import sys
 import time
 from datetime import datetime
+
+sys.path.append("..")
 
 # set logging.
 logger = logging.getLogger(__name__)
@@ -15,11 +16,11 @@ logger.setLevel(logging.DEBUG)
 
 
 def main(path: ("path to a folder"),
-	        iso: ("use ISO format for time", "flag", "iso")=False,):
+         iso: ("use ISO format for time", "flag", "iso") = False,):
     """Returns @path contents and the time after a delay of 3 seconds."""
 
     logger.info("Getting contents for: {}".format(path))
-    
+
     # add delay (gives time to switch to a browser and view logging).
     logger.debug("Sleeping for 3 seconds.")
     time.sleep(3)

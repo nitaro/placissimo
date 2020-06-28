@@ -1,27 +1,26 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
 """ This module contains a function that handles all server endpoints. """
 
 # import modules.
 import logging
 import os
-from concurrent.futures import ThreadPoolExecutor
-from tornado import web, ioloop
-from ..lib import dependency_error
-from ..lib import log_manager
+from . import dependency_error, log_manager
 from .handlers.api_handler import ApiHandler
 from .handlers.filesystem_handler import FilesystemHandler
 from .handlers.index_handler import IndexHandler
 from .handlers.state_handler import StateHandler
 from .handlers.tasks_handler import TasksHandler
 from .handlers.websocket_handler import WebsocketHandler
+from concurrent.futures import ThreadPoolExecutor
+from tornado import ioloop, web
 
 
-def serve(funk, server_name="servissimo", render_object=None, callback_arg=None, max_threads=None, 
-    socket_filters=None, port=8080, index_file=None, filesystem_path=None, allow_websocket=False, 
-    allow_broadcasts=False, allow_get=False, *args, **kwargs):
+def serve(funk, server_name="servissimo", render_object=None, callback_arg=None, max_threads=None,
+          socket_filters=None, port=8080, index_file=None, filesystem_path=None,
+          allow_websocket=False, allow_broadcasts=False, allow_get=False, *args, **kwargs):
     """ Serves @funk at localhost:@port with the following endpoints:
-            
+
             - "/": Provides a rendering of @index_file if it's not None.
             - "/api": Provides an interface to @funk.
             - "/state": Provides metadata about the current application state.
@@ -30,7 +29,7 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
             None.
             - "/websocket": Provides a websocket interface to send and receive logging statements if
             @allow_websocket is True.
-    
+
     Args:
         - funk (function): The user function.
         - server_name (str): The string that serves as the command line trigger to launch the 
@@ -80,10 +79,11 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
 
     # make sure @server_name contains only letters.
     if not server_name.isalpha():
-        msg = "The @server_name '{}' contains non-letter characters.".format(server_name)
+        msg = "The @server_name '{}' contains non-letter characters.".format(
+            server_name)
         logger.error(msg)
         raise ValueError(msg)
-    
+
     # make sure @max_threads is None or an int.
     if max_threads is not None and not isinstance(max_threads, int):
         msg = "The type of @max_threads must be None or an integer, not '{}'.".format(
@@ -97,7 +97,7 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
             socket_filters.__class__.__name__)
         logger.error(msg)
         raise TypeError(msg)
-    
+
     # validate @port.
     if not isinstance(port, int):
         msg = "The port value must be an integer not: {}".format(type(port))
@@ -105,7 +105,7 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
     if port < 5000 or port > 9999:
         msg = "The port value must be an integer between 5000 and 9999."
         raise ValueError(msg)
-    
+
     # if needed, make sure @index_file exists.
     if index_file is not None:
         index_file = os.path.abspath(index_file)
@@ -117,7 +117,7 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
     if allow_websocket and index_file is None:
         msg = "The \"/\" endpoint must be enabled if websockets are requested."
         raise dependency_error.DependencyError(msg)
-            
+
     # if needed, make sure @filesystem_path exists.
     if filesystem_path is not None:
         filesystem_path = os.path.abspath(filesystem_path)
@@ -133,58 +133,53 @@ def serve(funk, server_name="servissimo", render_object=None, callback_arg=None,
     websocket_connections = list() if allow_websocket else None
 
     # update the root logger so that websocket connections can emit logging messages.
-    log_manager.handle_sockets(websocket_connections, allow_broadcasts, socket_filters)
+    log_manager.handle_sockets(
+        websocket_connections, allow_broadcasts, socket_filters)
 
-    # prepaare endpoints.
+    # prepare endpoints.
     _endpoint_list = []
-    get_endpoint_paths = lambda: [e[0] for e in sorted(_endpoint_list)]
+    def get_endpoint_paths(): return [e[0] for e in sorted(_endpoint_list)]
 
-    # get non-private locals().
-    server_locals = {k:v for k,v in locals().items() if not k.startswith("_")}
+    # get non-private locals(); these will be passed to endpoint handlers.
+    server_locals = {k: v for k, v in locals().items()
+                     if not k.startswith("_")}
     logging.debug("Logging @server_locals as '* {KEY}:{VALUE}' ...")
     for k, v in server_locals.items():
         logging.debug("* {} : {}".format(k, v))
 
     # set endpoints.
     _endpoint_list += [
-        (r"/api", ApiHandler, dict(funk=funk, callback_arg=callback_arg, 
-            server_locals=server_locals, thread_prefix=thread_prefix, task_metadata=task_metadata, 
-            futures_metadata=futures_metadata, thread_pool=thread_pool, allow_get=allow_get)),
-        (r"/tasks", TasksHandler, dict(task_metadata=task_metadata, allow_get=allow_get)),
-        (r"/state", StateHandler, dict(get_endpoint_paths=get_endpoint_paths, 
-            task_metadata=task_metadata, thread_pool=thread_pool, 
-            websocket_connections=websocket_connections, allow_websocket=allow_websocket, 
-            allow_get=allow_get)),
-        ]
+        (r"/api", ApiHandler, server_locals),
+        (r"/tasks", TasksHandler, server_locals),
+        (r"/state", StateHandler, server_locals),
+    ]
 
     # if @index_file is not None, add an IndexHandler to @_endpoint_list.
     if index_file is not None:
         logger.info("Adding IndexHandler for file: {}".format(index_file))
-        index_handler = (r"/", IndexHandler, dict(index_file=index_file, 
-            render_object=render_object, server_locals=server_locals))
+        index_handler = (r"/", IndexHandler, server_locals)
         _endpoint_list.append(index_handler)
 
     # if @filesystem_path is not None, add a FilesystemHandler to @_endpoint_list.
     if filesystem_path is not None:
-        logger.info("Adding FilesystemHandler for directory: {}".format(filesystem_path))
-        filesystem_handler = (r"/filesystem", FilesystemHandler, dict(parent_path=filesystem_path, 
-            allow_get=allow_get))
+        logger.info(
+            "Adding FilesystemHandler for directory: {}".format(filesystem_path))
+        filesystem_handler = (r"/filesystem", FilesystemHandler, server_locals)
         _endpoint_list.append(filesystem_handler)
 
     # if @allow_websocket is True, add a WebsocketHandler to @_endpoint_list.
     if allow_websocket:
         logging.info("Adding WebsocketHandler.")
-        websocket_handler = (r"/websocket", WebsocketHandler, dict(port=port, 
-            websocket_connections=websocket_connections))
+        websocket_handler = (r"/websocket", WebsocketHandler, server_locals)
         _endpoint_list.append(websocket_handler)
 
     # create server.
     logger.info("Creating server at 'localhost:{}' with endpoints: {}".format(port,
-        get_endpoint_paths()))
+                                                                              get_endpoint_paths()))
     app = web.Application(_endpoint_list)
     app.listen(port)
     ioloop.IOLoop.instance().start()
-    
+
     return
 
 

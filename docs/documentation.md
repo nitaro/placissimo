@@ -5,7 +5,7 @@
 ## Why Placissimo? ##
 Let's say you have a function, `main()`. And you use `plac.call(main)` to provide an easy, elegant command line interface to `main()`.
 
-But let's say that you *also* want the option to access `main()` over a RESTful HTTP server. That's the scenario in which you can use `placissimo.call(main)` instead.
+But let's say that you *also* want the option to access `main()` over a RESTful HTTP server. Perhaps you need to prototype a service or a set of microservices. Or perhaps you're learning Italian.
 
 *For a "quick start" guide, see `../README.md`.*
 
@@ -17,6 +17,7 @@ Other reason to avoid Placissimo:
 - You are doing mission-critical work.
 	- Placissimo isn't well tested at this time.
 - You need a secure server.
+	- Placissimo is really intended to help create browser-based desktop apps.
 
 ## Installation ##
 I've had more success installing the requirements first a la:
@@ -54,11 +55,11 @@ This endpoint is only available if you pass an [HTML template](https://www.torna
 *Command line*:
 	
 	cd ../tests
-	py -3 example_01.py --servissimo -index-file="../placissimo/lib/index.html"
+	python3 example_01.py --servissimo -index-file="../placissimo/lib/index.html"
 
 *Python*:
 
-	#!/usr/bin/python 3
+	#!/usr/bin/python3
 	import placissimo, example_01
 	placissimo.serve(funk=example_01.main, index_file=placissimo.index_file)
 
@@ -82,7 +83,7 @@ In other words, a request for `/api?myNumber=12&myBoolean=True` means that `myNu
 ##### Response #####
 	{
 	  "servissimo_001": {
-	    "caller": "example_01.py.main",
+	    "caller": "example_01.py:main",
 	    "start_time": "2019-02-14T10:00:30.300222",
 	    "running": true,
 	    "done": false
@@ -117,7 +118,7 @@ By requesting a valid task identifier, e.g. `/tasks?name=servissimo_001`, the re
 ##### Response #####
 	{
 	  "servissimo_001": {
-	    "caller": "example_01.py.main",
+	    "caller": "example_01.py:main",
 	    "start_time": "2019-02-14T10:00:30.300222",
 	    "running": false,
 	    "done": true,
@@ -146,11 +147,11 @@ This endpoint is only available if an absolute or relative starting path is pass
 *Command line*:
 	
 	cd ../tests
-	py -3 example_01.py --servissimo -filesystem-path="."
+	python3 example_01.py --servissimo -filesystem-path="."
 
 *Python*:
 
-	#!/usr/bin/python 3
+	#!/usr/bin/python3
 	import placissimo, example_01
 	placissimo.serve(funk=example_01.main, filesystem_path=".")
 
@@ -200,11 +201,11 @@ This endpoint is only available if websockets are requested via the command line
 *Command line*:
 	
 	cd ../tests
-	py -3 example_01.py --servissimo -websocket-mode=broadcast -index-file=DEFAULT
+	python3 example_01.py --servissimo -websocket-mode=broadcast -index-file=DEFAULT
 
 *Python*:
 
-	#!/usr/bin/python 3
+	#!/usr/bin/python3
 	import placissimo, example_01
 	placissimo.serve(funk=example_01.main, allow_websocket=True, allow_broadcasts=True, index_file=placissimo.index_file)
 
@@ -288,3 +289,15 @@ And there's no need to annotate your callback argument. Placissimo will automati
 	placissimo.call(main, callback_arg="server_dict")
 
 *For a little demo of using a callback, see `../tests/example_05.py`.*
+
+## Tests
+To run the websocket test, see the comments in `./tests/websocket_test.py`.
+
+To run the unit test, first do:
+
+	cd tests
+	./launch_server.sh|bat
+
+and then do:
+
+	python3 -m unittest test_server.py

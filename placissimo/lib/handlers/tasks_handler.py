@@ -1,43 +1,32 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
-""" This module contains a class that provides a RESTful API to task metadata. """
+""" This module contains a class that provides a RESTful API to task metadata. 
+
+Todo:
+    * Consolidate redundant logic in GET/POST.
+    * Add start/limit params.
+"""
 
 # import modules.
-import logging
+from .base_handler import BaseHandler
 from tornado import web
 
 
-class TasksHandler(web.RequestHandler):
+class TasksHandler(BaseHandler):
     """ This class provides a RESTful API to task metadata. """
 
+    def initialize(self, **server_locals):
 
-    def initialize(self, task_metadata, allow_get):
-        """ Initializes the @web.RequestHandler subclass. 
-
-        Args:
-            - task_metadata (dict): Keys are thread names, values are a dict with human-readable
-            metadata about tasks, whether finished or not. 
-            - allow_get (bool): Use True to allow GET access. Otherwise, use False to restrict 
-            access to POST-only requests.
-        """
-
-        # set logging.
-        self.logger = logging.getLogger(__name__)
-        self.logger.addHandler(logging.NullHandler())
-
-        # set attributes.
-        self.task_metadata = task_metadata
-        self.allow_get = allow_get
-
+        super().initialize(__name__, **server_locals)
 
     @web.asynchronous
     def get(self):
         """ Implements GET requests. If @self.allow_get is False, sends a 403.
-        
+
         Returns:
             None
         """
-        
+
         # if GET access is restricted, return an error.
         if not self.allow_get:
             self.logger.warning("GET requests are forbidden.")
@@ -62,15 +51,14 @@ class TasksHandler(web.RequestHandler):
 
         return
 
-
     @web.asynchronous
     def post(self):
         """ Implements POST requests. 
-        
+
         Returns:
             None
         """
-        
+
         # get the task's thread name.
         thread_name = self.get_argument("name", default=None)
 
@@ -89,6 +77,6 @@ class TasksHandler(web.RequestHandler):
 
         return
 
-    
+
 if __name__ == "__main__":
     pass

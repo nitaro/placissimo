@@ -6,7 +6,7 @@ It allows you to run a function from the command line *or* through a RESTful HTT
 ## Stay Lazy My Friends ##
 Just add "issimo" to `plac`:
 	    
-	#!/usr/bin/python 3
+	#!/usr/bin/python3
 
 	# hello.py
 	def main(name):
@@ -20,14 +20,14 @@ Just add "issimo" to `plac`:
 
 Use the command line as before:
 
-	> py -3 hello.py -h
+	> python3 hello.py -h
 	> # shows help message including how to launch a server.
-	> py -3 hello.py Placissimo
+	> python3 hello.py Placissimo
 	Hello Placissimo
 
 *Or* launch a server:
 
-	> py -3 hello.py --servissimo
+	> python3 hello.py --servissimo
 	
 Make requests:
 
@@ -36,7 +36,7 @@ Make requests:
 	""" Response: 
 	{
 	  "servissimo_001": {
-	    "caller": "hello.py.main",
+	    "caller": "hello.py:main",
 	    "start_time": "2019-02-01T18:15:49.728341",
 	    "end_time": "2019-02-01T18:15:49.737351",
 	    "running": false,
@@ -59,7 +59,7 @@ Additional command line options let you:
 
 To see the options do:
 
-	> py -3 hello.py --servissimo -h
+	> python3 hello.py --servissimo -h
 
 ## If You're Still Interested ##
 For more information, see `./docs/documentation.md`.

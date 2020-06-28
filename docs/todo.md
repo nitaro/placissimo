@@ -13,6 +13,7 @@
   - This should be able to access the host's filesystem.
 
 ## Maybe ##
+- Use a Queue for tracking the identifier for a new task before creating that key in the task metadata dict.
 - Use an ordered dict for task metadata.
 - Consider a `/cleanup` endpoint that accepts a task's thread name as a parameter and then removes the task from `@task_metadata`. If the task is still running this should return an error message.
   - Maybe this should also call `.shutdown()` for `ThreadPoolExecutor()`?
