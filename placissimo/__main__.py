@@ -1,28 +1,41 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
 """ Placissimo is a Plac intensifier.
 
 It allows you to run a function from the command line or through a RESTful HTTP server. The function
 just needs to be annotated as per Plac.
 
-For information on Plac, see: https://pypi.org/project/plac/. """
+For information on Plac, see: https://pypi.org/project/plac/.
+
+TODO:
+    * Look into replacing CORS supports in BaseHandler with https://github.com/globocom/tornado-cors
+    and making CORS an optional flag/param.
+    * Cache /filesytem data until /api is called again -> to save redrawing the data
+    every time.
+    * Should you honor Plac's type conversion capability? Maybe it should be optional (i.e. default
+    is to use the "ast" library.)
+    * Might want to consider replacing lambda function in the API handler.
+        - See: https://docs.python.org/3.6/library/asyncio-eventloop.html#asyncio-event-loop
+        ... functools.partial() is better than lambda functions, because asyncio can inspect
+        functools.partial() object to display parameters in debug mode, whereas lambda functions 
+        have a poor representation.
+    * Work on module TODOs.
+"""
 
 # import modules.
 import logging
 import os
 import plac
 import sys
-from .lib import dependency_error
-from .lib import log_manager
-from .lib import server
+from .lib import dependency_error, log_manager, server
 
 # create logger.
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def call(funk, server_name="servissimo", render_object=None, callback_arg=None, max_threads=None, 
-    socket_filters=None, *args, **kwargs):
+def call(funk, server_name="servissimo", render_object=None, callback_arg=None, max_threads=None,
+         socket_filters=None, *args, **kwargs):
     """ Provides an iterface to @funk via the command line or an HTTP server.
 
     Args:
@@ -56,8 +69,9 @@ def call(funk, server_name="servissimo", render_object=None, callback_arg=None, 
             logger.error(msg)
             raise ValueError(msg)
         elif funk.__annotations__.get(callback_arg) is None:
-            funk.__annotations__[callback_arg] = ("", "positional", None, None, None, "")
-    
+            funk.__annotations__[callback_arg] = (
+                "", "positional", None, None, None, "")
+
     # get name of calling module.
     caller = os.path.basename(sys.argv[0])
 
@@ -76,28 +90,28 @@ def call(funk, server_name="servissimo", render_object=None, callback_arg=None, 
 
     # alter @wrapper as needed per the presence or absence of @trigger in sys.argv.
     if trigger not in sys.argv:
-        
+
         # update the .epilog attribute to include server details.
         addendum = "\n\nserver usage: {} {} -h".format(caller, trigger)
         funk.epilog = addendum if not hasattr(funk, "epilog") else "{}{}".format(
             funk.epilog.format(), addendum)
-    
+
     else:
 
         # remove @trigger from command line arguments.
         arglist.remove(trigger)
-        
+
         # set @main() annotations per "https://micheles.github.io/plac/#plac-vs-argparse".
         main.prog = "{} {}".format(caller, trigger)
-        
+
         # get required parameters from @main (port number, etc.).
         port, index_file, filesystem_path, allow_websocket, allow_broadcasts, allow_get = plac.call(
             main, arglist, *args, **kwargs)
-        
+
         # update @wrapper to launch a server.
-        wrapper = (lambda: server.serve(funk, server_name, render_object, callback_arg, max_threads, 
-            socket_filters, port, index_file, filesystem_path, allow_websocket, allow_broadcasts, 
-            allow_get, *args, **kwargs))
+        wrapper = (lambda: server.serve(funk, server_name, render_object, callback_arg, max_threads,
+                                        socket_filters, port, index_file, filesystem_path, allow_websocket, allow_broadcasts,
+                                        allow_get, *args, **kwargs))
 
     # run @wrapper.
     try:
@@ -110,16 +124,15 @@ def call(funk, server_name="servissimo", render_object=None, callback_arg=None, 
     return
 
 
-def main(allow_get: ("enable GET access", "flag"), 
-        websocket_mode: ("options for the \"/websocket\" endpoint", "option", None, None, 
-            ("private", "broadcast")),
-        filesystem_path: ("path to parent directory for the \"/filesystem\" endpoint", "option",
-            None, str)=None,
-        index_file: ("path to HTML template for the \"/\" endpoint \
-            (use \"DEFAULT\" to use the built-in file)", "option", None, str)=None,
-        port: ("port number to use", "option", None, int)=8080,
-        ):
-    
+def main(allow_get: ("enable GET access", "flag"),
+         websocket_mode: ("options for the \"/websocket\" endpoint", "option", None, None,
+                          ("private", "broadcast")),
+         filesystem_path: ("path to parent directory for the \"/filesystem\" endpoint", "option",
+                           None, str) = None,
+         index_file: ("path to HTML template for the \"/\" endpoint \
+            (use \"DEFAULT\" to use the built-in file)", "option", None, str) = None,
+         port: ("port number to use", "option", None, int) = 8080,
+         ):
     """Server options."""
 
     # determine websocket configuration.
@@ -130,8 +143,9 @@ def main(allow_get: ("enable GET access", "flag"),
 
     # if needed, use built-in HTML template.
     if index_file == "DEFAULT":
-        index_file = os.path.join(os.path.dirname(__file__), "lib", "index.html")
-    
+        index_file = os.path.join(
+            os.path.dirname(__file__), "lib", "index.html")
+
     return (port, index_file, filesystem_path, allow_websocket, allow_broadcasts, allow_get)
 
 

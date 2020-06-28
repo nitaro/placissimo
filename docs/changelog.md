@@ -1,6 +1,15 @@
 # Changelog #
 -----
 
+## Version 0.0.12 ##
+
+  - Added BaseHandler class.
+  - Forcing tornado version < 6.0 to avoid decorator AttributeError per https://github.com/mher/flower/issues/878.
+  - Websocket logger is now hashing websocket connection id's.
+  - Now using pipenv.
+  - Sorted imports with `isort -ds`
+  - Formatted with `autopep8 . -ri`
+
 ## Version 0.0.11 ##
 
 - Changed `/filesystem` response:

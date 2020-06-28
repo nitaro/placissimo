@@ -3,4 +3,5 @@
 *.pyc
 .vscode/
 *.code-workspace
+websocket_test.txt
 reset_git.bat

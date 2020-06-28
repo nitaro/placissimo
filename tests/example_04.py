@@ -1,10 +1,11 @@
-#!/usr/bin/python 3
+#!/usr/bin/python3
 
 """ Placissimo Example 04: writes a file. """
 
-# import modules.
-import sys; sys.path.append("..")
 import os
+import sys
+
+sys.path.append("..")
 
 
 def main(fname: ("a base filename",  "positional", None, str)):
@@ -14,7 +15,9 @@ def main(fname: ("a base filename",  "positional", None, str)):
         raise ValueError("Use only a file basename, not: {}".format(fname))
     if os.path.splitext(fname)[-1] == "":
         raise ValueError("File extension may not be null.")
-    
+    if os.path.isfile(fname):
+        raise FileExistsError("Wont't overwrite existing file.")
+
     with open(fname, "w") as f:
         pass
 
