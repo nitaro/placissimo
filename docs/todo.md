@@ -1,5 +1,4 @@
 # Ideas For Later #
------
 
 ## Definitely ##
 - Add a unit test to make sure `dependency_error.DependencyError` is raised when `allow_websocket=True` but `index_file=None`.
@@ -21,4 +20,4 @@
 - Consider a `/cancel` endpoint that allows you to try and cancel a thread.
   - This would match the ability to stop a process from the command line with `Ctrl + C`.
 - Consider adding an endpoint that uses the `inspect` module to provide information on the module function in question.
-  - Ultimately, I don't think this is really a good idea because it's the users responsibility to create any required documentation for their application.
+  - Ultimately, I don't think this is really a good idea because it's the user's responsibility to create any required documentation for their application.

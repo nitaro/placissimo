@@ -1,5 +1,9 @@
 # Changelog #
------
+
+## Version 0.0.13 ##
+
+  - Hashing websocket identifiers.
+  - Minor documentation fixes.
 
 ## Version 0.0.12 ##
 

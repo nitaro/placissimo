@@ -32,6 +32,18 @@ class WebsocketHandler(websocket.WebSocketHandler):
         for k, v in server_locals.items():
             setattr(self, k, v)
 
+        # set socket name.
+        self.name = ""
+
+    def __str__(self):
+        """ Hashes socket connection name. """
+
+        if self.name == "":
+            hash = self.__repr__().__hash__().__str__().replace("-", "")
+            self.name = "WSC{}".format(hash)
+
+        return self.name
+
     def check_origin(self, origin):
         """ Restricts websocket connections to localhost.
         See also: "https://www.tornadoweb.org/en/stable/_modules/tornado/websocket.html#WebSocketHandler.check_origin". """
