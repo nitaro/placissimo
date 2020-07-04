@@ -27,7 +27,7 @@ import logging
 import os
 import plac
 import sys
-from .lib import dependency_error, log_manager, server
+from .lib import dependency_error, server
 
 # create logger.
 logger = logging.getLogger(__name__)

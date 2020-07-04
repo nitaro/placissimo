@@ -246,7 +246,7 @@ If you request a logging level, the `socketMessage` value will equal the intende
 	  ...
 	  levelname: "DEBUG",
 	  "socketMessage": "Hello World",
-	  "message": "Websocket client <placissimo.lib.handlers.websocket_handler.WebsocketHandler object at 0x000001A2105AF0B8> said: debug:Hello World",
+	  "message": "Websocket client WSC7865538982562253374 said: debug:Hello World",
 	  ...
 	}
 
