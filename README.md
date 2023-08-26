@@ -1,3 +1,5 @@
+***This repository is no longer maintained. Don't use it! :P***
+
 # Introduzione #
 **Placissimo** is a [**Plac**](https://pypi.org/project/plac/) intensifier.
 
